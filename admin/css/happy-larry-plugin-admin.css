@@ -1,0 +1,92 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+:root {
+    --col-number: 5;
+}
+
+.main_content {
+}
+
+.main_content table thead tr th {
+    padding: 1rem;
+    font-size: 20px;
+    font-weight: 700;
+    background: #0A246A;
+    line-height: 1.5;
+    color: #fff;
+    width: calc(100% / var(--col-number));
+}
+
+
+.main_content table tbody tr td {
+    width: calc(100% / var(--col-number));
+}
+
+.main_content table tbody tr td .checkbox_input_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main_content table tbody tr td a, .main_content table tbody tr td input, .main_content table tbody tr td select {
+    width: 100%;
+    text-align: center;
+}
+
+.main_content table tbody tr td select.restock-auto {
+    background: #1F5A94;
+    color: #FFFFFF;
+}
+.main_content table tbody tr td select.restock-j1 {
+    background: #63A8B9;
+    color: #FFFFFF;
+}
+.main_content table tbody tr td select.location-indiv {
+    background: #D7D2AF;
+}
+.main_content table tbody tr td select.location-bundle {
+    background: #E4BE66;
+}
+
+.main_content table tbody tr td input {
+    border-radius: 0;
+}
+
+.main_content table tbody tr td a {
+    display: flex;
+    color: #0A246A;
+    font-weight: 700;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.main_content table tbody tr td a.variation_name_tag {
+    font-size: 14px;
+    margin-left: 20px;
+    color: #164fb0;
+    text-transform: none;
+}
+
+.main_content table {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+button#send_period {
+    background: #0A246A;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    padding: .6rem 1rem;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
+}
+
+button#send_period:hover {
+    background: #05133d;
+}
