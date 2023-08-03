@@ -13,8 +13,9 @@ class Happy_Larry_Plugin_Admin {
 	 * @var      string    $version    The current version of this plugin.
 	 */
 	private $version;
+    private string $plugin_name;
 
-	/**
+    /**
 	 * Initialize the class and set its properties
 	 * @param      string    $happy_larry_plugin       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
@@ -26,7 +27,7 @@ class Happy_Larry_Plugin_Admin {
 
         add_action('admin_menu', array($this, 'add_plugin_admin_menu_page'));
         add_action('wp_ajax_update_product_stock_and_category', array($this, 'update_product_stock_and_category'));
-
+        add_action('wp_ajax_update_admin_plugin_settings', array($this, 'update_admin_plugin_settings'));
 
     }
 
@@ -71,25 +72,33 @@ class Happy_Larry_Plugin_Admin {
      * Function to update product stock after submit
      */
     public function update_product_stock($product_array) {
-        foreach ($product_array as $id => $number_of_stock) {
-            $product = wc_get_product($id);
+        foreach ($product_array as $product_id => $number_of_stock) {
+            $product = wc_get_product($product_id);
             if (!$product) {
                 continue;
             }
 
-            if ($number_of_stock === "" ) {
+            $this->put_simple_product_instock($product);
+
+            /*if ($number_of_stock === "" ) {
                 $this->put_simple_product_instock($product);
                 continue;
-            }
+            }*/
 
-            if($number_of_stock == "0"){
-                $this->put_simple_product_out_of_stock($product);
+            if ($number_of_stock === "" ) {
+                update_post_meta($product_id, 'rent_available_stock', '');
                 continue;
             }
 
-            $product->set_manage_stock(true);
-            $product->set_stock_quantity($number_of_stock);
-            $product->save();
+            /*if($number_of_stock == "0"){
+                $this->put_simple_product_out_of_stock($product);
+                continue;
+            }*/
+
+//            $product->set_manage_stock(true);
+//            $product->set_stock_quantity($number_of_stock);
+//            $product->save();
+            update_post_meta($product_id, 'rent_available_stock', $number_of_stock);
         }
     }
 
@@ -98,51 +107,53 @@ class Happy_Larry_Plugin_Admin {
      */
     public function update_product_categories($product_array) {
         $uncategorized = 15;
-        $restock_auto = 17;
+//        $restock_auto = 17;
         $restockj1 = 18;
-        $rent_indiv = 19;
+//        $rent_indiv = 19;
         $rent_bundle = 20;
 
-        $swap_pairs = [
+        /*$swap_pairs = [
             $rent_indiv => $rent_bundle,
             $rent_bundle => $rent_indiv,
             $restock_auto => $restockj1,
             $restockj1 => $restock_auto
-        ];
+        ];*/
 
-        foreach ($product_array as $id => $category) {
-            $product = wc_get_product($id);
-            if (!$product || $category === "") {
+        foreach ($product_array as $product_id => $category_id) {
+            $product = wc_get_product($product_id);
+            if (!$product || $category_id === "") {
                 continue;
             }
 
             // get current product categories
             $current_categories = $product->get_category_ids();
 
-            // Check if category is part of the swap pairs and remove counterpart if necessary
-            if (array_key_exists($category, $swap_pairs) && in_array($swap_pairs[$category], $current_categories)) {
-                unset($current_categories[array_search($swap_pairs[$category], $current_categories)]);
-            }
+            /*// Check if category is part of the swap pairs and remove counterpart if necessary
+            if (array_key_exists($category_id, $swap_pairs) && in_array($swap_pairs[$category_id], $current_categories)) {
+                unset($current_categories[array_search($swap_pairs[$category_id], $current_categories)]);
+            }*/
 
-            if ($category === 'restock_none') {
-                if (($key = array_search($restock_auto, $current_categories)) !== false) {
+            // Unset both restock categories if restock_none is selected
+            if ($category_id === 'restock_none') {
+                /*if (($key = array_search($restock_auto, $current_categories)) !== false) {
                     unset($current_categories[$key]);
-                }
+                }*/
                 if (($key = array_search($restockj1, $current_categories)) !== false) {
                     unset($current_categories[$key]);
                 }
-            } elseif ($category === 'rent_none') {
-                if (($key = array_search($rent_indiv, $current_categories)) !== false) {
+            // Unset both rent categories if restock_none is selected
+            } elseif ($category_id === 'rent_none') {
+                /*if (($key = array_search($rent_indiv, $current_categories)) !== false) {
                     unset($current_categories[$key]);
-                }
+                }*/
                 if (($key = array_search($rent_bundle, $current_categories)) !== false) {
                     unset($current_categories[$key]);
                 }
             }
 
             // if the category is not already set, add it
-            if (!in_array($category, $current_categories)) {
-                $current_categories[] = $category;
+            if (!in_array($category_id, $current_categories)) {
+                $current_categories[] = $category_id;
                 if (($key = array_search($uncategorized, $current_categories)) !== false) {
                     unset($current_categories[$key]);
                 }
@@ -164,13 +175,13 @@ class Happy_Larry_Plugin_Admin {
         $allRestockCategories = $_POST['allRestockCategories'];
         $allRentCategories = $_POST['allRentCategories'];
         $allHorsStockProductSimple = $_POST['allHorsStockProductSimple'];
-        $allTimePeriod = $_POST['allTimePeriod'];
+//        $allTimePeriod = $_POST['allTimePeriod'];
 
         $this->update_product_categories($allRestockCategories);
         $this->update_product_categories($allRentCategories);
         $this->update_product_stock($allHorsStockProductSimple);
 
-        foreach ($allTimePeriod as $product_id => $time) {
+        /*foreach ($allTimePeriod as $product_id => $time) {
             $product = wc_get_product($product_id);
             if (!$product) {
                 continue;
@@ -182,8 +193,20 @@ class Happy_Larry_Plugin_Admin {
             }
 
             update_post_meta($product_id, 'rent_limit_time_nex_day', $time);
+        }*/
+
+        wp_send_json_success();
+    }
+
+
+    public function update_admin_plugin_settings() {
+        $timePeriod = $_POST['timePeriod'];
+
+        if (get_option('rent_limit_time') === '') {
+            add_option('rent_limit_time', '', '', 'yes');
         }
 
+        update_option('rent_limit_time', $timePeriod);
         wp_send_json_success();
     }
 
@@ -202,6 +225,7 @@ class Happy_Larry_Plugin_Admin {
 	 */
 	public function enqueue_scripts() {
         wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-admin.js', array('jquery'), mt_rand());
+        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-produit.js', array('jquery'), mt_rand());
         wp_localize_script($this->plugin_name, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
 	}
 

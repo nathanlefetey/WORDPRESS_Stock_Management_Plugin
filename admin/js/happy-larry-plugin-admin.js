@@ -1,37 +1,17 @@
 (function( $ ) {
 	'use strict';
 
-	function collectData(elements) {
-		let result = {};
-		elements.each(function() {
-			let input = $(this);
-			result[input.data('product-id')] = input.val() !== '' ? input.val() : "";
-		});
-		return result;
-	}
-
 	$(function() {
 		// OUT OF STOCK FOR PERIOD
-		$('#send_period').on('click', function() {
-			let horsStockProductSimple = $('.ht_day');
-			let restockCategories = $('.restock_category');
-			let rentCategories = $('.rent_category');
-			let timePeriod = $('.time_period');
-
-			let allRestockCategories = collectData(restockCategories);
-			let allRentCategories = collectData(rentCategories);
-			let allHorsStockProductSimple = collectData(horsStockProductSimple);
-			let allTimePeriod = collectData(timePeriod);
+		$('#save_settings').on('click', function() {
+			let timePeriod = $('#time_period').val();
 
 			$.ajax({
 				url: ajax_object.ajax_url,
 				type: 'POST',
 				data: {
-					action: 'update_product_stock_and_category',
-					allRestockCategories,
-					allRentCategories,
-					allHorsStockProductSimple,
-					allTimePeriod
+					action: 'update_admin_plugin_settings',
+					timePeriod
 				},
 				success: function(response) {
 					if(response.success){
