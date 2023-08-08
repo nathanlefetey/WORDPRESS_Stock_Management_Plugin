@@ -60,7 +60,7 @@
 
 .main_content table tbody tr td a {
     display: flex;
-    color: var(--main-color);
+    color: #000;
     font-weight: 700;
     font-size: 16px;
     text-decoration: none;
@@ -71,7 +71,7 @@
 .main_content table tbody tr td a.variation_name_tag {
     font-size: 14px;
     margin-left: 20px;
-    color: var(--secondary-color);
+    color: #000;
     text-transform: none;
 }
 
