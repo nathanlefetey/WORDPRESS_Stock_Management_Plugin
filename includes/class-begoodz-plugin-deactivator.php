@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/includes
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/includes
  */
 
 /**
@@ -16,11 +16,11 @@
  * This class defines all code necessary to run during the plugin's deactivation.
  *
  * @since      1.0.0
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/includes
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/includes
  * @author     Your Name <email@example.com>
  */
-class Happy_Larry_Plugin_Deactivator {
+class Begoodz_Plugin_Deactivator {
 
 	/**
 	 * Short Description. (use period)

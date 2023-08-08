@@ -1,9 +1,9 @@
 <?php
 
-class Happy_Larry_Plugin_Admin {
+class Begoodz_Plugin_Admin {
 
 
-	private string $happy_larry_plugin;
+	private string $begoodz_plugin;
 
 	/**
 	 * The version of this plugin.
@@ -17,12 +17,12 @@ class Happy_Larry_Plugin_Admin {
 
     /**
 	 * Initialize the class and set its properties
-	 * @param      string    $happy_larry_plugin       The name of this plugin.
+	 * @param      string    $begoodz_plugin       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $happy_larry_plugin, $version ) {
+	public function __construct( $begoodz_plugin, $version ) {
 
-		$this->plugin_name = $happy_larry_plugin;
+		$this->plugin_name = $begoodz_plugin;
 		$this->version = $version;
 
         add_action('admin_menu', array($this, 'add_plugin_admin_menu_page'));
@@ -36,8 +36,8 @@ class Happy_Larry_Plugin_Admin {
      * Register the administration menu for this plugin on the Wordpress Dashboard menu
      */
     public function add_plugin_admin_menu_page(){
-        add_menu_page('Happy Larry', 'Happy Larry', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'), 'dashicons-slides', 9);
-        add_submenu_page($this->plugin_name, 'Happy Larry', 'Happy Larry', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'));
+        add_menu_page('Begoodz', 'Begoodz', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'), 'dashicons-slides', 9);
+        add_submenu_page($this->plugin_name, 'Begoodz', 'Begoodz', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'));
         add_submenu_page($this->plugin_name, 'Stocks Produit', 'Stock Produit', 'manage_options', 'stock_product', array($this, 'display_plugin_stock_product_page'));
 //        add_submenu_page($this->plugin_name, 'Calendrier Stocks Produit (Beta)', 'Calendrier Stock Produit (Beta)', 'manage_options', 'stock_product_calendar', array($this, 'display_plugin_stock_product_calendar_page'));
         add_submenu_page($this->plugin_name, 'Calendrier Stocks Produit', 'Calendrier Stock Produit', 'manage_options', 'stock_product_calendar', array($this, 'display_plugin_stock_calendar_page'));
@@ -45,22 +45,22 @@ class Happy_Larry_Plugin_Admin {
 
     public function display_plugin_setup_page()
     {
-        include_once('partials/happy-larry-admin-display.php');
+        include_once('partials/begoodz-admin-display.php');
     }
 
     public function display_plugin_stock_product_page()
     {
-        include_once('partials/happy-larry-stock-product-display.php');
+        include_once('partials/begoodz-stock-product-display.php');
     }
 
     public function display_plugin_stock_product_calendar_page()
     {
-        include_once('partials/happy-larry-stock-product-calendar-display.php');
+        include_once('partials/begoodz-stock-product-calendar-display.php');
     }
 
     public function display_plugin_stock_calendar_page()
     {
-        include_once('partials/happy-larry-stock-calendar-display.php');
+        include_once('partials/begoodz-stock-calendar-display.php');
     }
 
     /**
@@ -241,7 +241,7 @@ class Happy_Larry_Plugin_Admin {
 	 *
 	 */
 	public function enqueue_styles() {
-        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/happy-larry-plugin-admin.css', array(), mt_rand());
+        wp_enqueue_style($this->plugin_name, plugin_dir_url(__FILE__) . 'css/begoodz-plugin-admin.css', array(), mt_rand());
     }
 
 	/**
@@ -256,9 +256,9 @@ class Happy_Larry_Plugin_Admin {
         $handle_stock_calendar = $this->plugin_name . '-stock-calendar';
 
         // Enqueue chaque script avec son handle unique
-        wp_enqueue_script($handle_admin, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-admin.js', array('jquery'), mt_rand(), true);
-        wp_enqueue_script($handle_stock_produit, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-produit.js', array('jquery'), mt_rand(), true);
-        wp_enqueue_script($handle_stock_calendar, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-calendar.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_script($handle_admin, plugin_dir_url(__FILE__) . 'js/begoodz-plugin-admin.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_script($handle_stock_produit, plugin_dir_url(__FILE__) . 'js/begoodz-plugin-stock-produit.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_script($handle_stock_calendar, plugin_dir_url(__FILE__) . 'js/begoodz-plugin-stock-calendar.js', array('jquery'), mt_rand(), true);
 
         // Localisez après avoir enqueued le script
         wp_localize_script($handle_admin, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));

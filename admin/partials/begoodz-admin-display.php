@@ -16,6 +16,6 @@ $rent_limit_time = get_option('rent_limit_time');
             </select>
         </div>
 
-        <button id="save_settings" class="save_buttons">Sauver les paramêtre</button>
+        <button id="save_settings" class="save_buttons">Sauver les paramêtres</button>
     </div>
 </div>

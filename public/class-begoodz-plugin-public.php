@@ -6,8 +6,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/public
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/public
  */
 
 /**
@@ -16,20 +16,20 @@
  * Defines the plugin name, version, and two examples hooks for how to
  * enqueue the public-facing stylesheet and JavaScript.
  *
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/public
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/public
  * @author     Your Name <email@example.com>
  */
-class Happy_Larry_Plugin_Public {
+class Begoodz_Plugin_Public {
 
 	/**
 	 * The ID of this plugin.
 	 *
 	 * @since    1.0.0
 	 * @access   private
-	 * @var      string    $happy_larry_plugin   The ID of this plugin.
+	 * @var      string    $begoodz_plugin   The ID of this plugin.
 	 */
-	private $happy_larry_plugin;
+	private $begoodz_plugin_name;
 
 	/**
 	 * The version of this plugin.
@@ -44,12 +44,12 @@ class Happy_Larry_Plugin_Public {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
-	 * @param      string    $happy_larry_plugin       The name of the plugin.
+	 * @param      string    $begoodz_plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $happy_larry_plugin, $version ) {
+	public function __construct( $begoodz_plugin, $version ) {
 
-		$this->happy_larry_plugin = $happy_larry_plugin;
+		$this->begoodz_plugin_name = $begoodz_plugin;
 		$this->version = $version;
 
 	}
@@ -65,15 +65,15 @@ class Happy_Larry_Plugin_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Happy_Larry_Plugin_Loader as all of the hooks are defined
+		 * defined in Begoodz_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Happy_Larry_Plugin_Loader will then create the relationship
+		 * The Begoodz_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_style( $this->happy_larry_plugin, plugin_dir_url(__FILE__) . 'css/happy-larry-plugin-public.css', array(), $this->version, 'all' );
+		wp_enqueue_style( $this->begoodz_plugin_name, plugin_dir_url(__FILE__) . 'css/begoodz-plugin-public.css', array(), $this->version, 'all' );
 
 	}
 
@@ -88,15 +88,15 @@ class Happy_Larry_Plugin_Public {
 		 * This function is provided for demonstration purposes only.
 		 *
 		 * An instance of this class should be passed to the run() function
-		 * defined in Happy_Larry_Plugin_Loader as all of the hooks are defined
+		 * defined in Begoodz_Plugin_Loader as all of the hooks are defined
 		 * in that particular class.
 		 *
-		 * The Happy_Larry_Plugin_Loader will then create the relationship
+		 * The Begoodz_Plugin_Loader will then create the relationship
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
 
-		wp_enqueue_script( $this->happy_larry_plugin, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script( $this->begoodz_plugin_name, plugin_dir_url(__FILE__) . 'js/begoodz-plugin-public.js', array( 'jquery' ), $this->version, false );
 
 	}
 

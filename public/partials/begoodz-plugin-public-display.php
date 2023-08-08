@@ -8,8 +8,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package     Happy_Larry_Plugin
- * @subpackage  Happy_Larry_Plugin/public/partials
+ * @package     Begoodz_Plugin
+ * @subpackage  Begoodz_Plugin/public/partials
  */
 ?>
 

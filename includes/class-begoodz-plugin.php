@@ -9,8 +9,8 @@
  * @link       http://example.com
  * @since      1.0.0
  *
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/includes
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/includes
  */
 
 /**
@@ -23,11 +23,11 @@
  * version of the plugin.
  *
  * @since      1.0.0
- * @package    Happy_Larry_Plugin
- * @subpackage Happy_Larry_Plugin/includes
+ * @package    Begoodz_Plugin
+ * @subpackage Begoodz_Plugin/includes
  * @author     Your Name <email@example.com>
  */
-class Happy_Larry_Plugin {
+class Begoodz_Plugin {
 
 	/**
 	 * The loader that's responsible for maintaining and registering all hooks that power
@@ -35,7 +35,7 @@ class Happy_Larry_Plugin {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      Happy_Larry_Plugin_Loader    $loader    Maintains and registers all hooks for the plugin.
+	 * @var      Begoodz_Plugin_Loader    $loader    Maintains and registers all hooks for the plugin.
 	 */
 	protected $loader;
 
@@ -44,9 +44,9 @@ class Happy_Larry_Plugin {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $happy_larry_plugin    The string used to uniquely identify this plugin.
+	 * @var      string    $begoodz_plugin    The string used to uniquely identify this plugin.
 	 */
-	protected $happy_larry_plugin_name;
+	protected $begoodz_plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -67,12 +67,12 @@ class Happy_Larry_Plugin {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'HAPPY_LARRY_PLUGIN_VERSION' ) ) {
-			$this->version = HAPPY_LARRY_PLUGIN_VERSION;
+		if ( defined( 'BEGOODZ_PLUGIN_VERSION' ) ) {
+			$this->version = BEGOODZ_PLUGIN_VERSION;
 		} else {
 			$this->version = '1.0.0';
 		}
-		$this->happy_larry_plugin_name = 'happy-larry-plugin';
+		$this->begoodz_plugin_name = 'begoodz-plugin';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -86,10 +86,10 @@ class Happy_Larry_Plugin {
 	 *
 	 * Include the following files that make up the plugin:
 	 *
-	 * - Happy_Larry_Plugin_Loader. Orchestrates the hooks of the plugin.
-	 * - Happy_Larry_Plugin_i18n. Defines internationalization functionality.
-	 * - Happy_Larry_Plugin_Admin. Defines all hooks for the admin area.
-	 * - Happy_Larry_Plugin_Public. Defines all hooks for the public side of the site.
+	 * - Begoodz_Plugin_Loader. Orchestrates the hooks of the plugin.
+	 * - Begoodz_Plugin_i18n. Defines internationalization functionality.
+	 * - Begoodz_Plugin_Admin. Defines all hooks for the admin area.
+	 * - Begoodz_Plugin_Public. Defines all hooks for the public side of the site.
 	 *
 	 * Create an instance of the loader which will be used to register the hooks
 	 * with WordPress.
@@ -103,33 +103,33 @@ class Happy_Larry_Plugin {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-happy-larry-plugin-loader.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-begoodz-plugin-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-happy-larry-plugin-i18n.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-begoodz-plugin-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-happy-larry-plugin-admin.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-begoodz-plugin-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-happy-larry-plugin-public.php';
+		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-begoodz-plugin-public.php';
 
-		$this->loader = new Happy_Larry_Plugin_Loader();
+		$this->loader = new Begoodz_Plugin_Loader();
 
 	}
 
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
-	 * Uses the Happy_Larry_Plugin_i18n class in order to set the domain and to register the hook
+	 * Uses the Begoodz_Plugin_i18n class in order to set the domain and to register the hook
 	 * with WordPress.
 	 *
 	 * @since    1.0.0
@@ -137,7 +137,7 @@ class Happy_Larry_Plugin {
 	 */
 	private function set_locale() {
 
-		$plugin_i18n = new Happy_Larry_Plugin_i18n();
+		$plugin_i18n = new Begoodz_Plugin_i18n();
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -152,7 +152,7 @@ class Happy_Larry_Plugin {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Happy_Larry_Plugin_Admin( $this->get_happy_larry_plugin(), $this->get_version() );
+		$plugin_admin = new Begoodz_Plugin_Admin( $this->get_begoodz_plugin(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -168,7 +168,7 @@ class Happy_Larry_Plugin {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Happy_Larry_Plugin_Public( $this->get_happy_larry_plugin(), $this->get_version() );
+		$plugin_public = new Begoodz_Plugin_Public( $this->get_begoodz_plugin(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
@@ -191,15 +191,15 @@ class Happy_Larry_Plugin {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_happy_larry_plugin() {
-		return $this->happy_larry_plugin_name;
+	public function get_begoodz_plugin() {
+		return $this->begoodz_plugin_name;
 	}
 
 	/**
 	 * The reference to the class that orchestrates the hooks with the plugin.
 	 *
 	 * @since     1.0.0
-	 * @return    Happy_Larry_Plugin_Loader    Orchestrates the hooks of the plugin.
+	 * @return    Begoodz_Plugin_Loader    Orchestrates the hooks of the plugin.
 	 */
 	public function get_loader() {
 		return $this->loader;

@@ -10,10 +10,10 @@
  *
  * @link              http://example.com
  * @since             1.0.0
- * @package           happy_larry_plugin
+ * @package           begoodz_plugin
  *
  * @wordpress-plugin
- * Plugin Name:       Happy Larry Plugin
+ * Plugin Name:       Begoodz Plugin
  * Plugin URI:        https://ingenius.agency/
  * Description:       This plugin provides global inventory management for woocommerce products.
  * Version:           2.0.0
@@ -35,34 +35,34 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'HAPPY_LARRY_PLUGIN_VERSION', '1.0.0' );
+define( 'Begoodz_Plugin_VERSION', '1.0.0' );
 
 /**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-happy-larry-plugin-activator.php
  */
-function activate_happy_larry_plugin() {
-	require_once plugin_dir_path(__FILE__) . 'includes/class-happy-larry-plugin-activator.php';
-    Happy_Larry_Plugin_Activator::activate();
+function activate_begoodz_plugin() {
+	require_once plugin_dir_path(__FILE__) . 'includes/class-begoodz-plugin-activator.php';
+    Begoodz_Plugin_Activator::activate();
 }
 
 /**
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-happy-larry-plugin-deactivator.php
  */
-function deactivate_happy_larry_plugin() {
-	require_once plugin_dir_path(__FILE__) . 'includes/class-happy-larry-plugin-deactivator.php';
-    Happy_Larry_Plugin_Deactivator::deactivate();
+function deactivate_begoodz_plugin() {
+	require_once plugin_dir_path(__FILE__) . 'includes/class-begoodz-plugin-deactivator.php';
+    Begoodz_Plugin_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_happy_larry_plugin' );
-register_deactivation_hook( __FILE__, 'deactivate_happy_larry_plugin' );
+register_activation_hook( __FILE__, 'activate_begoodz_plugin' );
+register_deactivation_hook( __FILE__, 'deactivate_begoodz_plugin' );
 
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path(__FILE__) . 'includes/class-happy-larry-plugin.php';
+require plugin_dir_path(__FILE__) . 'includes/class-begoodz-plugin.php';
 
 /**
  * Begins execution of the plugin.
@@ -73,10 +73,10 @@ require plugin_dir_path(__FILE__) . 'includes/class-happy-larry-plugin.php';
  *
  * @since    1.0.0
  */
-function run_happy_larry_plugin() {
+function run_begoodz_plugin() {
 
-	$plugin = new Happy_Larry_Plugin();
+	$plugin = new Begoodz_Plugin();
 	$plugin->run();
 
 }
-run_happy_larry_plugin();
+run_begoodz_plugin();
