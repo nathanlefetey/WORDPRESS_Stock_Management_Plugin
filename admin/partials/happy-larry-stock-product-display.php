@@ -36,7 +36,7 @@
                     $uncategorized = 15; /* $restock_auto = 17; */ $restockj1 = 18; /* $location_indiv = 19; */ $location_bundle = 20;
 
                     $edit_link = get_edit_post_link($product->get_id());
-                    $number_of_stock = get_post_meta($product->get_id(), 'rent_available_stock', true);
+                    $number_of_stock = get_post_meta($product->get_id(), '_yith_booking_max_per_block', true);
                     $product_categories = $product->get_category_ids();
                     $product_id = $product->get_id();
 //                $restock_class = in_array($restock_auto, $product_categories) ? 'restock-auto' : (in_array($restockj1, $product_categories) ? 'restock-j1' : '');

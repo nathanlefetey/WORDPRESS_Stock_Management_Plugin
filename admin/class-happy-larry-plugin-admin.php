@@ -99,7 +99,7 @@ class Happy_Larry_Plugin_Admin {
             }*/
 
             if ($number_of_stock === "" ) {
-                update_post_meta($product_id, 'rent_available_stock', '');
+//                update_post_meta($product_id, 'rent_available_stock', '');
                 update_post_meta($product_id, '_yith_booking_max_per_block', 0);
                 continue;
             }
@@ -112,7 +112,7 @@ class Happy_Larry_Plugin_Admin {
 //            $product->set_manage_stock(true);
 //            $product->set_stock_quantity($number_of_stock);
 //            $product->save();
-            update_post_meta($product_id, 'rent_available_stock', $number_of_stock);
+//            update_post_meta($product_id, 'rent_available_stock', $number_of_stock);
             update_post_meta($product_id, '_yith_booking_max_per_block', $number_of_stock);
         }
     }

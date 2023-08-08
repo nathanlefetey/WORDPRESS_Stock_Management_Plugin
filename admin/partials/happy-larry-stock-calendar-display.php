@@ -1,85 +1,102 @@
 <?php
-    $user_id = get_current_user_id();
-    $key = 'user_calendar_selected_date';
-    $selected_date = get_user_meta($user_id, $key, true);
-    $formattedDate = strftime("%d %B %Y", strtotime($selected_date));
+$user_id = get_current_user_id();
+$key = 'user_calendar_selected_date';
+$selected_date = get_user_meta($user_id, $key, true);
+
+if (!$selected_date || !strtotime($selected_date)) {
+    // Traitez l'erreur ou fournissez une valeur par défaut
+    $formattedDate = '';
+    $selected_date_timestamp = false;
+} else {
+    // Assurez-vous de définir la locale avant d'utiliser strftime
     setlocale(LC_TIME, 'fr_FR.UTF8', 'fr.UTF8', 'fr_FR.UTF-8', 'fr.UTF-8');
+    $formattedDate = strftime("%d %B %Y", strtotime($selected_date));
     $selected_date_timestamp = strtotime($selected_date);
+}
 
-    $batch_size = 100;  // Nombre de commandes à traiter à la fois
-    $paged = 1;         // Page initiale
+$batch_size = 100;  // Nombre de commandes à traiter à la fois
+$paged = 1;         // Page initiale
 
-    while (true) {
-        $orders = wc_get_orders(array(
-            'limit' => $batch_size,
-            'paged' => $paged,
-        ));
+$all_orders_booking_data = array();
 
-        // Si aucune commande n'est trouvée, sortir de la boucle
-        if (empty($orders)) {
-            break;
+while (true) {
+    $orders = wc_get_orders(array(
+        'limit' => $batch_size,
+        'paged' => $paged,
+    ));
+
+    // Si aucune commande n'est trouvée, sortir de la boucle
+    if (empty($orders)) {
+        break;
+    }
+
+    foreach ($orders as $order) {
+        $contains_booking_item = false; // Pour vérifier si la commande contient un élément de réservation
+
+        foreach ($order->get_items() as $item) {
+            $item_data = $item->get_data();
+            $order_id = $item_data['order_id'];
+            $product_name = $item_data['name'];
+            $quantity = $item_data['quantity'];
+            $product_id = $item_data['product_id'];
+
+            $booking_data = $item->get_meta('yith_booking_data');
+
+            // Si les données de réservation sont trouvées, cela signifie que c'est un produit de location.
+            if ($booking_data) {
+                $contains_booking_item = true;
+
+                $from = $booking_data['from'] ?? null;
+                $to = $booking_data['to'] ?? null;
+
+                $order_booking_data = array(
+                    '_product_name' => $product_name,
+                    '_product_id' => $product_id,
+                    '_quantity' => $quantity,
+                    '_booking-from' => $from,
+                    '_booking-to' => $to
+                );
+            }
         }
 
-
-
-        foreach ($orders as $order) {
-            foreach ($order->get_items() as $item) {
-                $item_data = $item->get_data();
-                $order_id = $item_data['order_id'];
-                $product_name = $item_data['name'];
-                $quantity = $item_data['quantity'];
-                $product_id = $item_data['product_id'];
-    //                echo '<pre>'; print_r(get_post_meta($product_id)); echo '</pre>';
-    //                echo '<pre>'; print_r($item->get_data()); echo '</pre>';
-                $booking_data = $item->get_meta('yith_booking_data');
-                if ($booking_data) {
-                    $from = $booking_data['from'] ?? null;
-                    $to = $booking_data['to'] ?? null;
-
-                    $order_booking_data = array(
-                        '_product_name' => $product_name,
-                        '_product_id' => $product_id,
-                        '_quantity' => $quantity,
-                        '_booking-from' => $from,
-                        '_booking-to' => $to
-                    );
-                }
-
-
-            }
+        // Si la commande contient au moins un élément de réservation, ajoutez-la à votre tableau de données.
+        if ($contains_booking_item) {
             $all_orders_booking_data[] = $order_booking_data;
         }
-
-        // Incrémenter la page pour le prochain lot de commandes
-        $paged++;
     }
 
+    // Incrémenter la page pour le prochain lot de commandes
+    $paged++;
+}
 
 
-    // Créez un tableau pour agréger la quantité de chaque produit loué.
-    $all_products_data = [];
 
-    foreach ($all_orders_booking_data as $product_data) {
-        if ($selected_date_timestamp <=$product_data['_booking-from'] || $product_data['_booking-to'] <= $selected_date_timestamp) {
-            continue;
-        }
-        $product_name = $product_data['_product_name'];
-        $product_id = $product_data['_product_id'];
-        $stock = get_post_meta($product_id, 'rent_available_stock', true);
-        $quantity = $product_data['_quantity'];
 
-        // Si le produit n'est pas encore dans le tableau, ajoutez-le.
-        if (!isset($all_products_data[$product_id])) {
-            $all_products_data[$product_id] = [
-                'name' => $product_name,
-                'quantity' => $quantity,
-                'stock' => $stock
-            ];
-        } else {
-            // Si le produit est déjà dans le tableau, mettez à jour sa quantité.
-            $all_products_data[$product_id]['quantity'] += $quantity;
-        }
+// Créez un tableau pour agréger la quantité de chaque produit loué.
+$all_products_data = [];
+
+foreach ($all_orders_booking_data as $product_data) {
+    if ($selected_date_timestamp <=$product_data['_booking-from'] || $product_data['_booking-to'] <= $selected_date_timestamp) {
+        continue;
     }
+    $product_name = $product_data['_product_name'];
+    $product_id = $product_data['_product_id'];
+    $stock = get_post_meta($product_id, '_yith_booking_max_per_block', true);
+    $quantity = $product_data['_quantity'];
+
+
+    // Si le produit n'est pas encore dans le tableau, ajoutez-le.
+    if (!isset($all_products_data[$product_id])) {
+        $all_products_data[$product_id] = [
+            'name' => $product_name,
+            'quantity' => $quantity,
+            'stock' => $stock
+        ];
+    } else {
+        // Si le produit est déjà dans le tableau, mettez à jour sa quantité.
+        $all_products_data[$product_id]['quantity'] += $quantity;
+    }
+}
 
 ?>
 <div class="wrap">

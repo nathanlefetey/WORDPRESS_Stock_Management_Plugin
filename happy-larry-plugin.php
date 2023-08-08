@@ -16,7 +16,7 @@
  * Plugin Name:       Happy Larry Plugin
  * Plugin URI:        https://ingenius.agency/
  * Description:       This plugin provides global inventory management for woocommerce products.
- * Version:           1.0.0
+ * Version:           2.0.0
  * Author:            Ingenius
  * Author URI:        https://ingenius.agency/
  * License:           GPL-2.0+
