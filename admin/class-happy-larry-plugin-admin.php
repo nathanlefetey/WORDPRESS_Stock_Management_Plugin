@@ -28,6 +28,7 @@ class Happy_Larry_Plugin_Admin {
         add_action('admin_menu', array($this, 'add_plugin_admin_menu_page'));
         add_action('wp_ajax_update_product_stock_and_category', array($this, 'update_product_stock_and_category'));
         add_action('wp_ajax_update_admin_plugin_settings', array($this, 'update_admin_plugin_settings'));
+        add_action('wp_ajax_update_product_stock_calendar', array($this, 'update_product_stock_calendar'));
 
     }
 
@@ -38,6 +39,8 @@ class Happy_Larry_Plugin_Admin {
         add_menu_page('Happy Larry', 'Happy Larry', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'), 'dashicons-slides', 9);
         add_submenu_page($this->plugin_name, 'Happy Larry', 'Happy Larry', 'manage_options', $this->plugin_name, array($this, 'display_plugin_setup_page'));
         add_submenu_page($this->plugin_name, 'Stocks Produit', 'Stock Produit', 'manage_options', 'stock_product', array($this, 'display_plugin_stock_product_page'));
+//        add_submenu_page($this->plugin_name, 'Calendrier Stocks Produit (Beta)', 'Calendrier Stock Produit (Beta)', 'manage_options', 'stock_product_calendar', array($this, 'display_plugin_stock_product_calendar_page'));
+        add_submenu_page($this->plugin_name, 'Calendrier Stocks Produit', 'Calendrier Stock Produit', 'manage_options', 'stock_product_calendar', array($this, 'display_plugin_stock_calendar_page'));
     }
 
     public function display_plugin_setup_page()
@@ -48,6 +51,16 @@ class Happy_Larry_Plugin_Admin {
     public function display_plugin_stock_product_page()
     {
         include_once('partials/happy-larry-stock-product-display.php');
+    }
+
+    public function display_plugin_stock_product_calendar_page()
+    {
+        include_once('partials/happy-larry-stock-product-calendar-display.php');
+    }
+
+    public function display_plugin_stock_calendar_page()
+    {
+        include_once('partials/happy-larry-stock-calendar-display.php');
     }
 
     /**
@@ -165,11 +178,8 @@ class Happy_Larry_Plugin_Admin {
         }
     }
 
-
-
-
     /**
-     * Ajax function to pass a product out of stock for a period
+     * Ajax function to update product stock meta sata
      */
     public function update_product_stock_and_category() {
         $allRestockCategories = $_POST['allRestockCategories'];
@@ -198,7 +208,9 @@ class Happy_Larry_Plugin_Admin {
         wp_send_json_success();
     }
 
-
+    /**
+     * Ajax function to pass rent_limit_time option that determine limit rent time before which one you can rent products
+     */
     public function update_admin_plugin_settings() {
         $timePeriod = $_POST['timePeriod'];
 
@@ -207,6 +219,18 @@ class Happy_Larry_Plugin_Admin {
         }
 
         update_option('rent_limit_time', $timePeriod);
+        wp_send_json_success();
+    }
+
+    /**
+     * Ajax function to update stock calendar
+     */
+    public function update_product_stock_calendar() {
+        $user_id = get_current_user_id();
+        $key = 'user_calendar_selected_date';
+        $selectedDate = $_POST['selectedDate'];
+
+        update_user_meta($user_id, $key, $selectedDate);
         wp_send_json_success();
     }
 
@@ -223,10 +247,23 @@ class Happy_Larry_Plugin_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts() {
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-admin.js', array('jquery'), mt_rand());
-        wp_enqueue_script($this->plugin_name, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-produit.js', array('jquery'), mt_rand());
-        wp_localize_script($this->plugin_name, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
-	}
+    public function enqueue_scripts() {
+        // Définissez d'abord les handles de chaque script pour éviter les conflits
+        $handle_admin = $this->plugin_name . '-admin';
+        $handle_stock_produit = $this->plugin_name . '-stock-produit';
+        $handle_stock_calendar = $this->plugin_name . '-stock-calendar';
+
+        // Enqueue chaque script avec son handle unique
+        wp_enqueue_script($handle_admin, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-admin.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_script($handle_stock_produit, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-produit.js', array('jquery'), mt_rand(), true);
+        wp_enqueue_script($handle_stock_calendar, plugin_dir_url(__FILE__) . 'js/happy-larry-plugin-stock-calendar.js', array('jquery'), mt_rand(), true);
+
+        // Localisez après avoir enqueued le script
+        wp_localize_script($handle_admin, 'ajax_object', array('ajax_url' => admin_url('admin-ajax.php')));
+
+        // Vous pouvez également enqueuer des scripts externes comme ceci
+        // wp_enqueue_script('fullcalendar','https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js', null, false, true);
+    }
+
 
 }

@@ -5,6 +5,8 @@
 
 :root {
     --col-number: 5;
+    --main-color: #ff414d;
+    --secondary-color: #981820;
 }
 
 .main_content {
@@ -14,7 +16,7 @@
     padding: 1rem;
     font-size: 20px;
     font-weight: 700;
-    background: #0A246A;
+    background: var(--main-color);
     line-height: 1.5;
     color: #fff;
     width: calc(100% / var(--col-number));
@@ -23,6 +25,7 @@
 
 .main_content table tbody tr td {
     width: calc(100% / var(--col-number));
+    padding: 8px 0;
 }
 
 .main_content table tbody tr td .checkbox_input_container {
@@ -57,17 +60,18 @@
 
 .main_content table tbody tr td a {
     display: flex;
-    color: #0A246A;
+    color: var(--main-color);
     font-weight: 700;
     font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
+    text-align: left;
 }
 
 .main_content table tbody tr td a.variation_name_tag {
     font-size: 14px;
     margin-left: 20px;
-    color: #164fb0;
+    color: var(--secondary-color);
     text-transform: none;
 }
 
@@ -77,7 +81,7 @@
 }
 
 button.save_buttons {
-    background: #0A246A;
+    background: var(--main-color);
     color: #fff;
     font-weight: 700;
     font-size: 16px;
@@ -88,7 +92,7 @@ button.save_buttons {
 }
 
 button.save_buttons:hover {
-    background: #05133d;
+    background: var(--secondary-color);
 }
 
 div.happy_larry_settings {
@@ -108,9 +112,44 @@ div.happy_larry_settings div.setting_division {
 div.happy_larry_settings div.setting_division label {
     font-size: 20px;
     font-weight: 500;
-    color: #0A246A;
+    color: var(--main-color);
 }
 
 div.happy_larry_settings div.setting_division select, div.happy_larry_settings div.setting_division input {
     width: clamp(250px, 50%, 400px);
+}
+
+div.calendar-date-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+}
+
+div.calendar-date-header h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+}
+
+div.calendar-date-header div.calendar-date-picker {
+    display: flex;
+    align-items: center;
+
+}
+
+div.calendar-date-header div.calendar-date-picker input {
+    height: 100%;
+    border: 1px solid var(--main-color);
+    border-radius: 0;
+    padding: .25rem 1rem;
+}
+
+div.main_content table.table tbody tr td a.calendar-product-link {
+    color: black;
+}
+
+div.main_content table.table tbody tr td.display-instock-products, div.main_content table.table tbody tr td.display-rent-products {
+    font-weight: 700;
+    width: calc(100% / var(--col-number));
+    text-align: center;
 }
