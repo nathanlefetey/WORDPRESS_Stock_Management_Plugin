@@ -42,7 +42,7 @@
 //                $restock_class = in_array($restock_auto, $product_categories) ? 'restock-auto' : (in_array($restockj1, $product_categories) ? 'restock-j1' : '');
 //                $rent_class = in_array($location_indiv, $product_categories) ? 'location-indiv' : (in_array($location_bundle, $product_categories) ? 'location-bundle' : '');
                     $rent_limit_time = get_post_meta($product_id, 'rent_limit_time_nex_day', true);
-//                echo "<pre>"; print_r($number_of_stock); echo "<pre>";
+//                echo "<pre>"; print_r(get_post_meta($product_id)); echo "<pre>";
                     ?>
                     <tr>
                         <td><a href="<?php echo $edit_link; ?>" target="_blank"><?php echo $product->get_name(); ?></a></td>
